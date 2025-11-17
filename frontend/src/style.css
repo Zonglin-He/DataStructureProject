@@ -1,0 +1,10 @@
+:root {
+  font-family: "Inter", "PingFang SC", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color: #1f2d3d;
+  background-color: #f5f7fa;
+}
+
+body {
+  margin: 0;
+  background-color: #f5f7fa;
+}
