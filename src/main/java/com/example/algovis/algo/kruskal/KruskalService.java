@@ -7,9 +7,6 @@ import com.example.algovis.api.dto.KruskalResponse;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import org.springframework.stereotype.Service;
-
-@Service
 public class KruskalService {
 
     public KruskalResponse runWithSteps(KruskalRequest request) {

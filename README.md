@@ -1,107 +1,30 @@
-# AlgoVis 项目说明
+# AlgoVis 桌面版（纯 JavaFX）
 
-一个基于 **Spring Boot + Vue3 + Element Plus** 的算法可视化项目，当前内置 Dijkstra / Kruskal / Huffman 三大模块，支持逐步播放、并查集树形展示、Huffman 树缩放拖拽及编码导出。
+已去掉 Spring Boot 和前端，项目只保留算法核心 + JavaFX GUI。内置 Dijkstra / Kruskal / Huffman，可在桌面窗口输入数据直接看步骤与结果。
 
----
+## 运行方式
+- **Windows（推荐）**：在项目根目录打开 PowerShell/CMD，运行  
+  `mvnw.cmd -DskipTests javafx:run`  
+  会自动下载 Maven 并启动主类 `com.example.algovis.gui.AlgoVisGuiApp`。
+- **其他平台**：安装 Maven 后运行 `mvn -DskipTests javafx:run`，或在 IDE 直接运行 `AlgoVisGuiApp`。
+
+> 需要 JDK 17+。若用 JDK 24 也可运行，出现 JavaFX 模块缺失再换回 JDK 17。
+
+## 使用说明
+- **Dijkstra**：输入顶点数、源点，勾选有向/无向，边按行填 `from to weight`（空格或逗号分隔），点击“运行 Dijkstra”。
+- **Kruskal**：输入顶点数 + 边列表，点击“运行 Kruskal”查看 MST 权重与步骤。
+- **Huffman**：输入文本，点击“生成编码”查看编码表、压缩信息和树节点列表。
+
+输出区域会列出每一步的快照，图形区可用 Prev/Next 按钮逐步高亮当前节点/边，便于演示与调试。
 
 ## 目录结构
-
 ```
 .
-├── pom.xml                          # 后端 Maven 配置
-├── src/main/java/com/example/...    # 算法核心 & REST API
-├── src/main/java/org/example/...    # Spring Boot 启动类（扫描 com.example.algovis）
-├── frontend/                        # Vue3 + Vite 前端
-└── .github/workflows/ci.yml         # GitHub Actions，前后端分别构建
+├── pom.xml                       # 纯 Java/JavaFX Maven 配置
+├── src/main/java/com/example/... # 算法核心 + JavaFX GUI
+└── src/main/java/com/example/.../api/dto # 请求/响应模型
 ```
 
-> 注意：`DataStructureProjectApplication` 已通过 `@SpringBootApplication(scanBasePackages = {...})` 同时扫描 `org.example` 与 `com.example.algovis`，才能加载 CORS 配置、算法控制器。
-
----
-
-## 后端运行
-
-1. **安装 JDK 17** 并设置 `JAVA_HOME`。可用 `java -version` 验证。
-2. 在项目根目录执行：
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-3. 默认监听 `http://localhost:8080`，Swagger UI 地址：`http://localhost:8080/swagger-ui.html`。
-
-### API 速览
-
-| 接口 | 描述 | 请求体 |
-| --- | --- | --- |
-| `POST /api/dijkstra/run` | Dijkstra 算法，返回步骤序列 | `GraphRequest`（节点数、源点、边列表） |
-| `POST /api/kruskal/run` | Kruskal 最小生成树 | `KruskalRequest`（节点数、边列表） |
-| `POST /api/huffman/encode` | Huffman 编码 | `HuffmanRequest{text}` |
-
-返回的数据结构均携带每一步的快照信息，方便前端可视化。
-
----
-
-## 前端运行
-
-1. 进入 `frontend/`，准备 Node.js 18+：
-   ```bash
-   npm install
-   npm run dev     # 默认 http://localhost:5173
-   ```
-2. 如后端地址非 `http://localhost:8080`，在 `frontend/.env` 中设置：
-   ```
-   VITE_API_BASE=http://your-host:port
-   ```
-   重启 `npm run dev` 即可。
-3. 生产构建：
-   ```bash
-   npm run build
-   ```
-
----
-
-## 前端功能亮点
-
-### Dijkstra 视图
-- 支持编辑节点、边、是否有向与源点。
-- 步骤播放器控制播放/暂停/拖动。
-- GraphCanvas 以圆形布局高亮正在 relax 的边、当前节点。
-
-### Kruskal 视图
-- 同步显示：图上候选/已选边、步骤详情、parent/rank 表格。
-- **并查集树形动画**：`DisjointSetForest` 将每个根展示成树状结构，路径压缩或 union 时相关节点会高亮且带缩放动画，便于观察逐帧变化。
-
-### Huffman 视图
-- Huffman 树画布支持滚轮缩放、拖拽平移、重置视图。
-- 编码表/编码结果面板内置**复制编码**、**复制全部 bit 串**、**导出 JSON**（包含输入文本、编码表、统计信息）。
-
----
-
-## 常见问题
-
-1. **前端提示 Network Error 或 CORS**  
-   - 确保 Spring Boot 已启动且运行在 `VITE_API_BASE` 指定的地址。  
-   - 启动类需包含 `scanBasePackages`，以加载 `WebConfig`（CORS 允许 `*`）。
-
-2. **Rollup 可选依赖报错**  
-   - 项目已显式安装 `@rollup/rollup-linux-x64-gnu`，若仍报错，可删除 `frontend/node_modules` 与 `package-lock.json` 后重新 `npm install`。
-
-3. **构建体积警告**  
-   - `npm run build` 会提示 chunk > 500 kB，可按需拆分路由或调整 Rollup `manualChunks`，暂不影响运行。
-
----
-
-## CI / 持续集成
-
-`.github/workflows/ci.yml` 包含两个 Job：
-- **backend**：Ubuntu + Temurin JDK 17，执行 `./mvnw -B verify`。
-- **frontend**：Node.js 20，缓存 npm 依赖，执行 `npm install && npm run build`。
-
-Push / PR 到 `master` 或 `main` 时自动执行，保证代码在合并前可构建。
-
----
-
-## 下一步建议
-
-- 为并查集树增加更加细致的动效（如路径压缩时显示箭头）。
-- Huffman 视图支持导入已保存的 JSON。
-- 把图编辑抽成 JSON/YAML 导入导出，提高复用度。
+## 维护提示
+- 如需双击运行的独立包，可在 `javafx-maven-plugin` 配置 `jlink` 或用打包工具捆绑 JavaFX 依赖。
+- 想增强可视化，可在 GUI 中加入画布绘制节点/边动画。

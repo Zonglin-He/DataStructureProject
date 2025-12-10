@@ -11,9 +11,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
-import org.springframework.stereotype.Service;
-
-@Service
 public class DijkstraService {
 
     private static final int INF = Integer.MAX_VALUE;
