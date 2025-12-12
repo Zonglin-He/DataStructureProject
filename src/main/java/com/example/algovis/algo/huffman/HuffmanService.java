@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 public class HuffmanService {
 
@@ -59,11 +60,11 @@ public class HuffmanService {
             queue.offer(new TreeNode(null, 0, null, null));
         }
         while (queue.size() > 1) {
-            TreeNode left = queue.poll();
-            TreeNode right = queue.poll();
+            TreeNode left = Objects.requireNonNull(queue.poll());
+            TreeNode right = Objects.requireNonNull(queue.poll());
             queue.offer(new TreeNode(null, left.frequency + right.frequency, left, right));
         }
-        return queue.poll();
+        return Objects.requireNonNull(queue.poll());
     }
 
     private void buildCodes(TreeNode node, String prefix, Map<Character, String> codes) {
