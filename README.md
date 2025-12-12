@@ -4,7 +4,7 @@
 
 ## 运行方式
 - **Windows（推荐）**：在项目根目录打开 PowerShell/CMD，运行  
-  `mvnw.cmd -DskipTests javafx:run`  
+  `.\mvnw.cmd -DskipTests javafx:run`  
   会自动下载 Maven 并启动主类 `com.example.algovis.gui.AlgoVisGuiApp`。
 - **其他平台**：安装 Maven 后运行 `mvn -DskipTests javafx:run`，或在 IDE 直接运行 `AlgoVisGuiApp`。
 
