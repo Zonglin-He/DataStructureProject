@@ -7,10 +7,10 @@ import java.util.List;
 
 public class KruskalRequest {
 
-    @Min(value = 1, message = "图中至少需要 1 个顶点")
+    @Min(value = 1, message = "The graph must have at least 1 vertex")
     private int vertexCount;
 
-    @NotEmpty(message = "边列表不能为空")
+    @NotEmpty(message = "Edge list cannot be empty")
     private List<@Valid EdgeInput> edges;
 
     public int getVertexCount() {

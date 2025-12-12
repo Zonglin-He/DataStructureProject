@@ -4,10 +4,10 @@ import jakarta.validation.constraints.Min;
 
 public class EdgeInput {
 
-    @Min(value = 0, message = "from 顶点不能为负数")
+    @Min(value = 0, message = "from vertex cannot be negative")
     private int from;
 
-    @Min(value = 0, message = "to 顶点不能为负数")
+    @Min(value = 0, message = "to vertex cannot be negative")
     private int to;
 
     private int weight;

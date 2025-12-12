@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class HuffmanRequest {
 
-    @NotBlank(message = "文本不能为空")
+    @NotBlank(message = "Text cannot be empty")
     private String text;
 
     public String getText() {

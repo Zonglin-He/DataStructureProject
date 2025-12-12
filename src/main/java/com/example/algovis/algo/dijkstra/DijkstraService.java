@@ -80,17 +80,17 @@ public class DijkstraService {
     private void validate(GraphRequest request) {
         int vertexCount = request.getVertexCount();
         if (request.getSource() == null || request.getSource() < 0 || request.getSource() >= vertexCount) {
-            throw new IllegalArgumentException("source 顶点超出范围");
+            throw new IllegalArgumentException("source vertex is out of range");
         }
         if (request.getEdges() == null) {
-            throw new IllegalArgumentException("边列表不能为空");
+            throw new IllegalArgumentException("edge list cannot be empty");
         }
         for (EdgeInput edge : request.getEdges()) {
             if (edge.getFrom() < 0 || edge.getFrom() >= vertexCount || edge.getTo() < 0 || edge.getTo() >= vertexCount) {
-                throw new IllegalArgumentException("边包含非法顶点 idx");
+                throw new IllegalArgumentException("edge contains an invalid vertex index");
             }
             if (edge.getWeight() < 0) {
-                throw new IllegalArgumentException("Dijkstra 不支持负权重: " + edge.getFrom() + " -> " + edge.getTo());
+                throw new IllegalArgumentException("Dijkstra does not support negative weights: " + edge.getFrom() + " -> " + edge.getTo());
             }
         }
     }

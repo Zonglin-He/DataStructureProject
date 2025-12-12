@@ -53,16 +53,16 @@ public class KruskalService {
 
     private void validate(KruskalRequest request) {
         if (request.getEdges() == null || request.getEdges().isEmpty()) {
-            throw new IllegalArgumentException("边列表不能为空");
+            throw new IllegalArgumentException("edge list cannot be empty");
         }
         int vertexCount = request.getVertexCount();
         for (EdgeInput edge : request.getEdges()) {
             if (edge.getWeight() < 0) {
-                throw new IllegalArgumentException("Kruskal 需要非负权重: " + edge.getFrom() + " -> " + edge.getTo());
+                throw new IllegalArgumentException("Kruskal requires non-negative weights: " + edge.getFrom() + " -> " + edge.getTo());
             }
             if (edge.getFrom() < 0 || edge.getFrom() >= vertexCount
                 || edge.getTo() < 0 || edge.getTo() >= vertexCount) {
-                throw new IllegalArgumentException("边包含非法顶点 idx");
+                throw new IllegalArgumentException("edge contains an invalid vertex index");
             }
         }
     }

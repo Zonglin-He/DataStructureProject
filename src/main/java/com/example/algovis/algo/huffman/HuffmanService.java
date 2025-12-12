@@ -15,7 +15,7 @@ public class HuffmanService {
     public HuffmanResponse encode(HuffmanRequest request) {
         String text = request.getText();
         if (text == null || text.isEmpty()) {
-            throw new IllegalArgumentException("文本不能为空");
+            throw new IllegalArgumentException("text cannot be empty");
         }
 
         Map<Character, Integer> freq = buildFrequency(text);
@@ -55,7 +55,7 @@ public class HuffmanService {
             queue.offer(new TreeNode(entry.getKey(), entry.getValue(), null, null));
         }
         if (queue.size() == 1) {
-            // 单字符文本时补一个哨兵节点，保证编码至少有 1 位
+            // Add a sentinel node for single-character text so the code length is at least one bit
             queue.offer(new TreeNode(null, 0, null, null));
         }
         while (queue.size() > 1) {

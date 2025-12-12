@@ -8,16 +8,16 @@ import java.util.List;
 
 public class GraphRequest {
 
-    @Min(value = 1, message = "图中至少需要 1 个顶点")
+    @Min(value = 1, message = "The graph must have at least 1 vertex")
     private int vertexCount;
 
     private boolean directed;
 
-    @NotEmpty(message = "边列表不能为空")
+    @NotEmpty(message = "Edge list cannot be empty")
     private List<@Valid EdgeInput> edges;
 
-    @NotNull(message = "Dijkstra 需要提供 source 顶点")
-    @Min(value = 0, message = "source 顶点不能为负数")
+    @NotNull(message = "Dijkstra requires a source vertex")
+    @Min(value = 0, message = "source vertex cannot be negative")
     private Integer source;
 
     public int getVertexCount() {
